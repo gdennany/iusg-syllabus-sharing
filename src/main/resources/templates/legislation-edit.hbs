@@ -1,0 +1,56 @@
+{{> partials/header.hbs }}
+
+<div id="main-content">
+    <div class="row" style="margin-top: 30px;">
+        <h2>Edit Legislation</h2>
+    </div>
+
+    <div class="collapsed bg-none">
+        <div class="row">
+            <article class="profile feed-item" itemscope="itemscope" itemtype="http://schema.org/Person">
+                <form action="/create-new-legislation" method="get">
+                    <input hidden id="legislationId" name="legislationId" value="{{bill.id}}">
+
+                    <div class="content">
+                        Bill Name: <input id="name" name="name" style="width: 30%" type="text" value="{{bill.name}}">
+                        Bill Box Url: <input type="text" id="billUrl" style="width: 25%;" name="billUrl"
+                                             value="{{bill.legislationBoxUrl}}">
+                        Bill Description: <textarea id="description" name="description" style="width: 50%">{{& bill.description}}</textarea>
+
+                        Committee:
+                        <br/>
+                        <select name="committee" style="width: 25%">
+                            {{#each inCommittees}}
+                                <option name="{{formalName}}" value="{{id}}">{{formalName}}</option>
+                            {{/each}}
+                            <option selected name="{{bill.committee.formalName}}"
+                                    value="{{bill.committeeId}}">{{bill.committee.formalName}}</option>
+                        </select>
+                        <br/>
+
+                        Is Funding Bill:
+                        <br/>
+                        <select name="fundingBill" style="width: 25%">
+                            <option {{#if bill.fundingBill}}selected{{/if}} value="yes">Yes</option>
+                            <option {{#unless bill.fundingBill}}selected{{/unless}} value="no">No</option>
+
+                        </select>
+                        <br/>
+
+                        Is Bylaws Revision Bill:
+                        <br/>
+                        <select name="bylawsBill" style="width: 25%">
+                            <option {{#if bill.bylawsBill}}selected{{/if}} value="yes">Yes</option>
+                            <option {{#unless bill.bylawsBill}}selected{{/unless}} value="no">No</option>
+                        </select>
+                    </div>
+
+                    <input type="submit" class="button" value="Submit"/>
+                </form>
+            </article>
+        </div>
+    </div>
+
+</div>
+
+{{> partials/footer.hbs }}
