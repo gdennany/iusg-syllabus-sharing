@@ -10,6 +10,8 @@
 3. (Windows users only) If you do not have Windows 10 Pro, you need to use IUWare to get a Windows EDU activation key and use it in your activation settings.
 4. Make sure Linux containers are being used.
   - These should be defaulted on in docker. They are for Mac and Windows.
+5. Clone this repository to you local machine
+  - `git clone https://github.com/gdennany/iusg-syllabus-sharing` should do the trick.
 5. Bring up a local docker database:
   - From the command line, run: `docker run -d --name iusg-syllabus -p 8080:8080 -p 8081:8081 -p 28015:28015 -p 29015:29015 rethinkdb`
 6. Set environment variables (database_hostname=localhost;url_base=localhost;cleanse=true;dbpassword=rethinkdb)
@@ -24,5 +26,5 @@
 7. Now run the CongressDashboard.kt main method.
 8. Navigate to http://localhost/ in a web browser.
   - Here you should see a web response. If you receive an error then you did something wrong.
-  - To see your local changes, click th restart button in intellij (or re-run the main method) and refresh your web browser.
+  - To see your local changes, click the restart button in intellij (or re-run the main method) and refresh your web browser.
 9. Happy developing
