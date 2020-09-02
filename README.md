@@ -1,26 +1,28 @@
 # IUSG Congress Bill Dashboarding Site
 
 ## How to check out and run
-1. Make sure IntelliJ IDEA, Git, and Oracle JDK 8/OpenJDK 8 are installed
-2. Make sure Docker for Windows/Docker for Mac (or Linux) is installed. If you do not have Windows 10 Pro,
-you need to use IUWare to get a Windows EDU activation key and use it in your activation settings.
-3. Make sure Linux containers are being used.
-4. Run the following command to bring up a local database:
-`docker run -d --name iusg-db -p 8080:8080 -p 8081:8081 -p 28015:28015 -p 29015:29015 rethinkdb`
-5. Set environment variables
-    - Click the green run button on the main method, click on "CongressDashboardKt" configuration.
+1. Make sure IntelliJ IDEA, Git, and jdk 8 (1.8) are installed
+  - JDK 8 download: https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html
+    - to see your current JDK, run: `git --version` from the command line
+    - Alternatively you can set the JDK for this project on intellij. In intellij, go to File -> Project Structure -> Project Tab -> Project SDK -> select 1.8
+2. If not already, download docker for your OS.
+  - Docker Download: https://docs.docker.com/get-docker/
+3. (Windows users only) If you do not have Windows 10 Pro, you need to use IUWare to get a Windows EDU activation key and use it in your activation settings.
+4. Make sure Linux containers are being used.
+  - These should be defaulted on in docker. They are for Mac and Windows.
+5. Bring up a local docker database:
+  - From the command line, run: `docker run -d --name iusg-syllabus -p 8080:8080 -p 8081:8081 -p 28015:28015 -p 29015:29015 rethinkdb`
+6. Set environment variables (database_hostname=localhost;url_base=localhost;cleanse=true;dbpassword=rethinkdb)
+  - Click the green run button on the main method (in CongressDashboard.kt), then click on "Edit (or Create) CongressDashboardKt" configuration.
+    - Under the configuration tab, in the environment variables section, add: `database_hostname=localhost;url_base=localhost;cleanse=true;dbpassword=rethinkdb`
+    - Click apply, then okay.
+  - Specifics of above command:
     - `database_hostname` - localhost if running locally
     - `url_base` - localhost if running locally
     - `cleanse` - whether to remove all data first
     - `dbpassword` - rethinkdb password if running in prod or staging
-
-
-
-
-### Messages:
-Student life desc: The Student Life Committee is responsible for issues to pertaining to campus safety, issues of general health and well‐being in and outside the campus community, and initiatives of a recreational nature intended to improve the student experience.  As a standing committee, the Student Life Committee will have the power to adopt resolutions through the sponsorship of one or more of its members for initiatives that relate to its committees.
-
-Steering desc: The Congressional Steering Committee is composed of all five chairpersons of the IUSG standing committees.  The Speaker of the Congress chairs the committee and is the last committee member to vote. The Committee acts as a medium of information exchange between the Congress and the Congressional Secretary and serves as an informational source for Congress Members concerning executive matters. Resolutions of Reprimand or Censure shall be adopted by the Committee. Upon accusations of violations of the IUSG Code of Conduct, the Congressional Steering Committee shall serve as a conduct committee, as regulated by Article XIV of these bylaws.
-
-Env affairs desc: The Environmental Affairs Committee shall be responsible for issues pertaining to the practices of conservation and  responsibility for the environment. As a standing committee, the Environmental Affairs committee will have the   power to adopt resolutions through the sponsorship of one or more of its members for initiatives that relate to   its committees.
-
+7. Now run the CongressDashboard.kt main method.
+8. Navigate to http://localhost/ in a web browser.
+  - Here you should see a web response. If you receive an error then you did something wrong.
+  - To see your local changes, click th restart button in intellij (or re-run the main method) and refresh your web browser.
+9. Happy developing
