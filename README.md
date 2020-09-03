@@ -1,6 +1,6 @@
 # IUSG Syllabus Sharing Site
 
-## How to check out and runnnnnn
+## How to check out and run
 1. Make sure IntelliJ IDEA, Git, and jdk 8 (1.8) are installed
     - JDK 8 download: https://www.oracle.com/java/technologies/javase/javase-jdk8-downloads.html
     - to see your current JDK, run: `git --version` from the command line
