@@ -1,4 +1,4 @@
-# IUSG Congress Bill Dashboarding Site
+# IUSG Syllabus Sharing Site
 
 ## How to check out and run
 1. Make sure IntelliJ IDEA, Git, and jdk 8 (1.8) are installed
