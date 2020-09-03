@@ -25,7 +25,6 @@ import edu.iu.iustudentgovernment.models.Note
 import edu.iu.iustudentgovernment.models.Paragraph
 import edu.iu.iustudentgovernment.models.Statement
 import edu.iu.iustudentgovernment.models.Vote
-import edu.iu.iustudentgovernment.models.Whitcomb
 import edu.iu.iustudentgovernment.urlBase
 import edu.iu.iustudentgovernment.utils.asPojo
 import edu.iu.iustudentgovernment.utils.createEmail
@@ -620,11 +619,6 @@ class Database(val cleanse: Boolean) {
     fun insertMessage(message: Message) = insert(messagesTable, message)
     fun getSpeakerMessage() = getMessage("speaker_message")!!.value
     fun getWhitcombDescription() = getMessage("whitcomb_description")!!.value.toString()
-
-    // whitcomb award
-    fun getAllWhitcombAwardees() = getAll<Whitcomb>(whitcombTable)
-    fun getWhitcombAwardsForMember(username: String) = getAllWhitcombAwardees().filter { it.username == username }
-    fun insertWhitcombAward(award: Whitcomb) = insert(whitcombTable, award)
 
     // complaints
     fun getComplaints() = getAll<Complaint>(complaintsTable)
