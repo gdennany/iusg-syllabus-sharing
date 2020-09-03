@@ -26,15 +26,8 @@ data class Committee(
                 membership.role != Role.MEMBER
             }
 
-    val chair get() = database.getMember(chairUsername)!!
     val members get() = database.getCommitteeMembersForCommittee(id).map { it.member }
-    val membersString get() = members.joinToString(", ") { it.asLink() }
     val upcomingMeetings get() = database.getFutureMeetings().filter { it.committeeId == id }.take(3)
-    val pastMeetings get() = database.getPastMeetings().filter { it.committeeId == id }.take(3)
-    val activeLegislation get() = database.getActiveLegislation().filter { it.committeeId == id }
-    val enactedLegislation get() = database.getEnactedLegislation().filter { it.committeeId == id }
-    val failedLegislation get() = database.getFailedLegislation().filter { it.committeeId == id }
-    val asLink get() = "<a href='/committees/$id'>$formalName</a>"
     val description get() = database.getMessage(descriptionId)!!.value.toString()
 }
 
@@ -46,7 +39,6 @@ data class Meeting(
     val committeeId: String,
     var agendaFileUrl: String?,
     val ledBy: List<String>,
-    val notes: List<Note>,
     val minutesUrl: String? = null
 ) : Idable {
     val date
@@ -54,10 +46,6 @@ data class Meeting(
             .format(DateTimeFormatter.ofPattern("hh:mm, MM/dd/YYYY"))
 
     val committee get() = database.getCommittee(committeeId)
-    val ledByString get() = ledBy.filter { it.isNotBlank() }.joinToString(", ") { database.getMember(it)!!.asLink }
-    val notesString get() = notes.joinToString("\n") { it.text }
-    val ledByNoLinkString get() = ledBy.filter { it.isNotBlank() }.joinToString(", ")
-    val jsTime get() = SimpleDateFormat("yyyy-MM-dd'T'hh:mm").format(Date.from(Instant.ofEpochMilli(time)))
 
     override fun getPermanentId() = meetingId
 

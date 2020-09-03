@@ -25,5 +25,5 @@ val database: Database = (if (databaseHostname == "localhost") {
     Database(cleanse)
 } else Database(false))
 
-val savedPages = mutableMapOf<String, String>().apply { if (cleanse) database.insertInitial() }
+val savedPages = mutableMapOf<String, String>()
 
