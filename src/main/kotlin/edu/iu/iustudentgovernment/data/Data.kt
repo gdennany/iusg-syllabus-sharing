@@ -5,7 +5,6 @@ import com.rethinkdb.RethinkDB
 import com.rethinkdb.net.Connection
 import edu.iu.iustudentgovernment.data.Database
 
-val fromEmail = "aratzman@iu.edu"
 val emailTest = true
 
 val gson = Gson()

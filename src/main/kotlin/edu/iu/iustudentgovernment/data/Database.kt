@@ -2,18 +2,11 @@ package edu.iu.iustudentgovernment.data
 
 import com.rethinkdb.RethinkDB.r
 import edu.iu.iustudentgovernment.authentication.Member
-import edu.iu.iustudentgovernment.authentication.Role
-import edu.iu.iustudentgovernment.authentication.Title
 import edu.iu.iustudentgovernment.connection
-import edu.iu.iustudentgovernment.fromEmail
 import edu.iu.iustudentgovernment.gson
-import edu.iu.iustudentgovernment.http.HandlebarsContent
-import edu.iu.iustudentgovernment.http.renderHbs
 import edu.iu.iustudentgovernment.models.Committee
-import edu.iu.iustudentgovernment.models.CommitteeMembership
 import edu.iu.iustudentgovernment.models.Idable
 import edu.iu.iustudentgovernment.models.Meeting
-import edu.iu.iustudentgovernment.models.Message
 import edu.iu.iustudentgovernment.utils.asPojo
 import edu.iu.iustudentgovernment.utils.queryAsArrayList
 import java.util.concurrent.ConcurrentHashMap
@@ -99,61 +92,15 @@ class Database(val cleanse: Boolean) {
 
     // members
     fun getMember(username: String): Member? = get(membersTable, username)
-    fun insertMember(member: Member) {
-        insert(membersTable, member)
-        if (member.active) insertCommitteeMembership(
-            CommitteeMembership(
-                member.username,
-                getUuid(),
-                "congress",
-                Role.MEMBER
-            )
-        )
-    }
-
-    fun updateMember(member: Member) = update(membersTable, member.username, member)
-
-    // committee memberships
-    fun getAllCommitteeMemberships() =
-        getAll<CommitteeMembership>(committeeMembershipsTable).sortedBy { it.committee.formalName }
-
-    fun getCommitteeMembersForCommittee(committee: String) =
-        getAllCommitteeMemberships().filter { it.committeeId == committee }
-
-    fun getCommitteeMembershipsForMember(member: String) =
-        getAllCommitteeMemberships().filter { it.username == member }
-
-    fun insertCommitteeMembership(committeeMembership: CommitteeMembership) =
-        insert(committeeMembershipsTable, committeeMembership)
-
-    fun updateCommitteeMembership(committeeMembership: CommitteeMembership) =
-        update(committeeMembershipsTable, committeeMembership.id, committeeMembership)
 
     // committees
     fun getCommittee(committeeId: String): Committee? = get(committeesTable, committeeId)
     fun getCommittees() = getAll<Committee>(committeesTable).sortedBy { it.formalName }
-    
+
     // meetings
     fun getMeetings() = getAll<Meeting>(meetingsTable)
     fun getFutureMeetings(): List<Meeting> =
         getMeetings().filter { it.time > System.currentTimeMillis() }.sortedBy { it.time }
-
-    // messages
-    fun getMessage(id: String): Message? = get(messagesTable, id)
-    fun insertMessage(message: Message) = insert(messagesTable, message)
-
-    // utils
-
-    fun getUuid() = r.uuid().run<String>(connection)!!
-
-
-    fun update(table: String, id: Any, obj: Idable): Any? {
-        if (table in caches.keys) {
-            caches[table]!!.removeIf { it.getPermanentId() == id }
-            caches[table]!!.add(obj)
-        }
-        return r.table(table).get(id).replace(r.json(gson.toJson(obj))).run<Any>(connection)
-    }
 
     fun <T : Idable> insert(table: String, obj: T): Any? {
         if (table in caches.keys) caches[table]!!.add(obj)

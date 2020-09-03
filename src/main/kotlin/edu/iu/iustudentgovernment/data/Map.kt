@@ -32,7 +32,6 @@ internal fun getMap(
         map["user"] = user
         map["loggedIn"] = map["user"] != null
         map["committees"] = database.getCommittees()
-        map["steering"] = user?.steering
 
         // meta
         map["description"] = "IUSG Congressional Site"
