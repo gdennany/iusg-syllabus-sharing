@@ -2,14 +2,7 @@ package edu.iu.iustudentgovernment
 
 import edu.iu.iustudentgovernment.authentication.User
 import edu.iu.iustudentgovernment.authentication.casRoutes
-import edu.iu.iustudentgovernment.controllers.administrationRoutes
-import edu.iu.iustudentgovernment.controllers.awardsRoutes
-import edu.iu.iustudentgovernment.controllers.committeesRoutes
-import edu.iu.iustudentgovernment.controllers.contactRoutes
 import edu.iu.iustudentgovernment.controllers.homeRoutes
-import edu.iu.iustudentgovernment.controllers.initiativesRoutes
-import edu.iu.iustudentgovernment.controllers.legislationRoutes
-import edu.iu.iustudentgovernment.controllers.meetingsRoutes
 import edu.iu.iustudentgovernment.controllers.memberRoutes
 import edu.iu.iustudentgovernment.controllers.resourcesRoutes
 import edu.iu.iustudentgovernment.controllers.staticContentRoutes
@@ -55,16 +48,8 @@ fun Application.module() {
         staticContentRoutes()
 
         homeRoutes()
-        contactRoutes()
         resourcesRoutes()
-        administrationRoutes()
-        awardsRoutes()
-        committeesRoutes()
-        contactRoutes()
-        initiativesRoutes()
         memberRoutes()
-        legislationRoutes()
-        meetingsRoutes()
         resourcesRoutes()
         casRoutes()
     }

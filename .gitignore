@@ -1,0 +1,4 @@
+# Ignore tracking of these files from git
+build/
+.gradle/
+.idea/
