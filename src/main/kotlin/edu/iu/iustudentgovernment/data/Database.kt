@@ -9,17 +9,14 @@ import edu.iu.iustudentgovernment.fromEmail
 import edu.iu.iustudentgovernment.gson
 import edu.iu.iustudentgovernment.http.HandlebarsContent
 import edu.iu.iustudentgovernment.http.renderHbs
-import edu.iu.iustudentgovernment.models.AttendanceTaken
 import edu.iu.iustudentgovernment.models.Committee
 import edu.iu.iustudentgovernment.models.CommitteeFile
 import edu.iu.iustudentgovernment.models.CommitteeMembership
-import edu.iu.iustudentgovernment.models.Complaint
 import edu.iu.iustudentgovernment.models.Idable
 import edu.iu.iustudentgovernment.models.IndividualVote
 import edu.iu.iustudentgovernment.models.Legislation
 import edu.iu.iustudentgovernment.models.Meeting
 import edu.iu.iustudentgovernment.models.MeetingFile
-import edu.iu.iustudentgovernment.models.MeetingMinutes
 import edu.iu.iustudentgovernment.models.Message
 import edu.iu.iustudentgovernment.models.Note
 import edu.iu.iustudentgovernment.models.Paragraph
@@ -412,7 +409,6 @@ class Database(val cleanse: Boolean) {
 
 
     // committee memberships
-    fun getCommitteeMembership(id: Any): CommitteeMembership? = get(committeeMembershipsTable, id)
     fun getAllCommitteeMemberships() =
         getAll<CommitteeMembership>(committeeMembershipsTable).sortedBy { it.committee.formalName }
 
@@ -428,19 +424,11 @@ class Database(val cleanse: Boolean) {
     fun updateCommitteeMembership(committeeMembership: CommitteeMembership) =
         update(committeeMembershipsTable, committeeMembership.id, committeeMembership)
 
-    fun deleteCommitteeMembership(committeeMembershipId: String) =
-        delete(committeeMembershipsTable, committeeMembershipId)
-
-
     // committees
     fun getCommittee(committeeId: String): Committee? = get(committeesTable, committeeId)
     fun getCommittees() = getAll<Committee>(committeesTable).sortedBy { it.formalName }
 
     fun insertCommittee(committee: Committee) = insert(committeesTable, committee)
-
-    fun updateCommittee(committee: Committee) = update(committeesTable, committee.id, committee)
-
-    fun deleteCommittee(committeeId: String) = delete(committeesTable, committeeId)
 
     // meetings
     fun getMeetings() = getAll<Meeting>(meetingsTable)
@@ -480,38 +468,6 @@ class Database(val cleanse: Boolean) {
         }
     }
 
-    fun updateMeeting(meeting: Meeting) = update(meetingsTable, meeting.meetingId, meeting)
-    fun deleteMeeting(meetingId: String) = delete(meetingsTable, meetingId)
-
-
-    // meeting minutes
-    fun insertMeetingMinutes(meetingMinutes: MeetingMinutes) = insert(meetingMinutesTable, meetingMinutes)
-    fun getMeetingMinutes() = getAll<MeetingMinutes>(meetingMinutesTable)
-    fun getMeetingMinutes(id: Any): MeetingMinutes? = get(meetingMinutesTable, id)
-    fun updateMeetingMinutes(meetingMinutes: MeetingMinutes) =
-        update(meetingMinutesTable, meetingMinutes.fileId, meetingMinutes)
-
-    fun deleteMeetingMinutes(meetingMinutesId: String) = delete(meetingMinutesTable, meetingMinutesId)
-
-
-    // meeting files
-    fun insertMeetingFile(meetingFile: MeetingFile) = insert(meetingFilesTable, meetingFile)
-    fun getMeetingFiles() = getAll<MeetingFile>(meetingFilesTable)
-    fun getMeetingFile(id: Any): MeetingFile? = get(meetingFilesTable, id)
-    fun updateMeetingFile(meetingFile: MeetingFile) = update(meetingFilesTable, meetingFile.fileId, meetingFile)
-    fun deleteMeetingFile(meetingFileId: String) = delete(meetingFilesTable, meetingFileId)
-
-
-    // committee files
-    fun insertCommitteeFile(committeeFile: CommitteeFile) = insert(committeeFilesTable, committeeFile)
-    fun getCommitteeFiles() = getAll<CommitteeFile>(committeeFilesTable)
-    fun getCommitteeFile(id: Any): CommitteeFile? = get(committeeFilesTable, id)
-    fun updateCommitteeFile(committeeFile: CommitteeFile) =
-        update(committeeFilesTable, committeeFile.fileId, committeeFile)
-
-    fun deleteCommitteeFile(committeeFileId: String) = delete(committeeFilesTable, committeeFileId)
-
-
     // legislation
     fun insertLegislation(legislation: Legislation) {
         insert(legislationTable, legislation)
@@ -542,68 +498,17 @@ class Database(val cleanse: Boolean) {
 
     fun getLegislation() = getAll<Legislation>(legislationTable)
     fun getLegislation(id: String): Legislation? = get(legislationTable, id)
-    fun updateLegislation(legislation: Legislation) {
-        update(legislationTable, legislation.id, legislation)
 
-        if (legislation.enacted) {
-            val members = legislation.committee.members.map { it.email }
-
-            val email = renderHbs(
-                HandlebarsContent(
-                    "emails/legislation-enacted.hbs",
-                    mapOf(
-                        "legislation" to legislation,
-                        "url" to "$urlBase/legislation/view/${legislation.id}",
-                        "urlBase" to urlBase
-                    )
-                )
-            )
-
-            sendMessage(
-                createEmail(
-                    members,
-                    fromEmail,
-                    "Legislation Has Been Enacted | ${legislation.name}",
-                    email
-                )
-            )
-        }
-    }
-
-    fun deleteLegislation(legislationId: String) = delete(legislationTable, legislationId)
     fun getEnactedLegislation() = getLegislation().filter { it.enacted }
     fun getFailedLegislation() = getLegislation().filter { it.failed }
-    fun getPassedLegislation() = getLegislation().filter { it.passed }
-    fun getInactiveLegislation() = getLegislation().filter { !it.active }
     fun getActiveLegislation() = getLegislation().filter { it.active }
-
-    // attendance
-    fun insertAttendance(attendanceTaken: AttendanceTaken) = insert(attendanceTable, attendanceTaken)
-    fun getAttendances() = getAll<AttendanceTaken>(attendanceTable)
-    fun getAttendance(id: String): AttendanceTaken? = get(attendanceTable, id)
-    fun getAttendanceForMeeting(meetingId: String) = getAttendances().find { it.meetingId == meetingId }
-    fun updateAttendance(attendanceTaken: AttendanceTaken) =
-        update(attendanceTable, attendanceTaken.attendenceId, attendanceTaken)
-
-    fun deleteAttendance(attendanceTakenId: String) = delete(attendanceTable, attendanceTakenId)
-
-
-    // votes
-    fun insertVote(vote: Vote) = insert(votesTable, vote)
-    fun insertIndividualVote(individualVote: IndividualVote, vote: Vote) =
-        updateVote(vote.apply { votes.add(individualVote) })
 
     fun getVotes() = getAll<Vote>(votesTable)
     fun getVote(id: String): Vote? = get(votesTable, id)
     fun getVotesContainingMember(member: String) =
         getVotes().filter { it.votes.any { vote -> vote.username == member } }
 
-    fun getMemberVotes(member: String) =
-        getVotesContainingMember(member).map { it.votes.first { vote -> vote.username == member } }
-
     fun updateVote(vote: Vote) = update(votesTable, vote.voteId, vote)
-    fun deleteVote(voteId: String) = delete(votesTable, voteId)
-
 
     // statements
     fun getStatements() = getAll<Statement>(statementsTable).sortedByDescending { it.lastEditTime ?: it.createdAt }
@@ -614,16 +519,8 @@ class Database(val cleanse: Boolean) {
 
     // messages
     fun getMessage(id: String): Message? = get(messagesTable, id)
-    fun updateMessage(message: Message) = update(messagesTable, message.id, message)
-    fun updateMessage(id: String, value: Any) = update(messagesTable, id, Message(id, value))
     fun insertMessage(message: Message) = insert(messagesTable, message)
     fun getSpeakerMessage() = getMessage("speaker_message")!!.value
-    fun getWhitcombDescription() = getMessage("whitcomb_description")!!.value.toString()
-
-    // complaints
-    fun getComplaints() = getAll<Complaint>(complaintsTable)
-    fun insertComplaint(complaint: Complaint) = insert(complaintsTable, complaint)
-    fun deleteComplaint(complaintId: String) = delete(complaintsTable, complaintId)
 
     // utils
 
