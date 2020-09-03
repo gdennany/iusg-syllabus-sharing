@@ -19,7 +19,6 @@ fun Route.resourcesRoutes() {
         get("") {
             val map = getMap(call, "Resources")
 
-            call.respondHbs(HandlebarsContent("resources-home.hbs", map))
         }
     }
 }
