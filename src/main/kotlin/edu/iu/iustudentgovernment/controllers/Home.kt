@@ -11,6 +11,6 @@ fun Route.homeRoutes() {
     get("/") {
         val map = getMap(call, "Home")
 
-        call.respondHbs(HandlebarsContent("index.hbs", map))
+        call.respondHbs(HandlebarsContent("syllabus-landing-page.hbs", map))
     }
 }
