@@ -15,7 +15,7 @@
 5. Bring up a local docker database:
     - From the command line, run: `docker run -d --name iusg-syllabus -p 8080:8080 -p 8081:8081 -p 28015:28015 -p 29015:29015 rethinkdb`
 6. Set environment variables (database_hostname=localhost;url_base=localhost;cleanse=true;dbpassword=rethinkdb)
-    - Click the green run button on the main method (in CongressDashboard.kt), then click on "Edit (or Create) CongressDashboardKt" configuration.
+    - Click the green run button on the main method (in SyllabusLandingPage.kt), then click on "Edit (or Create) SylabusLandingPage" configuration.
         - Note: if the run button isn't present next to the main function, then you probably need to build the project. To do this, hit the little green hammerb at the top of the intellij window.
         - Under the configuration tab, in the environment variables section, add: `database_hostname=localhost;url_base=localhost;cleanse=true;dbpassword=rethinkdb`
         - Click apply, then okay.
@@ -24,7 +24,7 @@
         - `url_base` - localhost if running locally
         - `cleanse` - whether to remove all data first
         - `dbpassword` - rethinkdb password if running in prod or staging
-7. Now run the CongressDashboard.kt main method.
+7. Now run the SyllabusLandingPage.kt main method.
 8. Navigate to http://localhost/ in a web browser.
     - Here you should see a web response. If you receive an error then you did something wrong.
     - To see your local changes, click the restart button in intellij (or re-run the main method) and refresh your web browser.
