@@ -11,7 +11,10 @@
                         that this is just a mockup of the general idea of the website and should only be used as a general
                         guideline of the project and to follow the specific style guidelines laid out on the IU style
                         guide for colors, formatting, typography, etc. For example a text chunk should never be this large</p>
-
+                        <form id="SyllabusForm" >
+                          <input id="textInput" type="text"></input>
+                          <input type="submit"></input>
+                        </form>
                         <p style="margin-top: 40px; font-size: 1.4375rem;"><span><b>Search bar will go here</b></span></p>
                     </div>
                 </div><!-- /.layout --></div>
@@ -25,7 +28,31 @@
 
 
         </div>
-
+    <script>
+        // Create a collection!  I'm not sure how to code that
+        var messageRef = xxxx.database().ref("NameOfCollection");
+        // Add a submit event for Form
+        document.getElementById("SyllabusForm").addEventListener("submit",submitForm);
+        //eliminate default event when click submit
+        function submitForm(e){
+            e.preventDefault();
+            //get input value which is "textInput" above
+            var search = getInputVal(textInput);
+            //test console
+            //console.log(search)
+            //Save data to database with saveMessage function
+            saveMessage(search)
+        }
+        function getInputVal(id){
+            return document.getElementById(id);
+         }
+         function saveMessage(search){
+            //push search to collection
+            messageRef.push({
+                search:search;
+            })
+         }
+    </script>
 
 </main>
 
