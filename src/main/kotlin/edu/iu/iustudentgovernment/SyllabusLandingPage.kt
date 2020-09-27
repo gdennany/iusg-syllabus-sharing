@@ -2,10 +2,7 @@ package edu.iu.iustudentgovernment
 
 import edu.iu.iustudentgovernment.authentication.User
 import edu.iu.iustudentgovernment.authentication.casRoutes
-import edu.iu.iustudentgovernment.controllers.homeRoutes
-import edu.iu.iustudentgovernment.controllers.memberRoutes
-import edu.iu.iustudentgovernment.controllers.resourcesRoutes
-import edu.iu.iustudentgovernment.controllers.staticContentRoutes
+import edu.iu.iustudentgovernment.controllers.*
 import edu.iu.iustudentgovernment.http.statusConfiguration
 import io.ktor.application.Application
 import io.ktor.application.install
@@ -52,5 +49,7 @@ fun Application.module() {
         memberRoutes()
         resourcesRoutes()
         casRoutes()
+        submissionsRoutes()
+        searchRoutes()
     }
 }

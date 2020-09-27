@@ -51,7 +51,7 @@ internal fun renderHbs(content: HandlebarsContent): String {
     return template.apply(content.model)
 }
 
-data class HandlebarsContent(val viewName: String, val model: Map<String, Any?>)
+data class HandlebarsContent(val viewName: String, val model: Map<String, Any?>?)
 
 suspend fun ApplicationCall.respondHbs(handlebarsContent: HandlebarsContent, status: HttpStatusCode?=null) {
         respondText(renderHbs(handlebarsContent), ContentType.parse("text/html"), status)
