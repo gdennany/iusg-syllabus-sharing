@@ -18,8 +18,11 @@
                           <span><input type="submit" style="margin-left: 100px;"></input></span>
                             </div>
                         </form>
-
-                        <p style="margin-top: 40px; font-size: 1.4375rem;"><span><b>Search bar will go here</b></span></p>
+                        <div>
+                        <p style="margin-top: 35px; font-size: 1.4375rem;"><span><b>Select syllabus file to upload:</b></span></p>
+                          <input type="file" id="myfile" name="myfile" multiple><br>
+                          <input type="submit"value = "Upload">
+                         <div>
                     </div>
                 </div><!-- /.layout --></div>
         </div>
@@ -35,7 +38,7 @@
 
    <script>
 
-
+            //!<label for="myfile">Select syllabus file to upload:</label>
             // Create a collection!  I'm not sure how to code that
             // *var messageRef = xxxx.database().ref("NameOfCollection");
             // Add a submit event for Form
